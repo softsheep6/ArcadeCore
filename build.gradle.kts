@@ -1,11 +1,9 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     application
-    kotlin("jvm") version "1.9.0"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("io.papermc.paperweight.userdev") version "1.5.5"
-    id("xyz.jpenilla.run-paper") version "2.1.0"
+    kotlin("jvm") version "2.4.0"
+    id("com.gradleup.shadow") version "9.4.2"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.21"
+    id("xyz.jpenilla.run-paper") version "3.0.2"
 }
 
 group = "com.example"
@@ -17,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
 }
 
 tasks {
@@ -25,13 +23,9 @@ tasks {
         dependsOn(shadowJar)
     }
 
-    assemble {
-        dependsOn(reobfJar)
-    }
-
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release.set(17)
+        options.release.set(25)
     }
 
     javadoc {
@@ -43,12 +37,12 @@ tasks {
     }
 
     runServer {
-        minecraftVersion("1.20.1")
+        minecraftVersion("1.21.11")
     }
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
+kotlin {
+    jvmToolchain(25)
 }
 
 application {
