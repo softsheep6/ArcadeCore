@@ -1,8 +1,8 @@
-name: TestPlugin
-version: 1.0
-main: com.example.test.TestPlugin
-api-version: 1.20
-description: Super cool test plugin!
-author: Stephen
-contributors: [Brandon, Josh]
-website: https://mcworkshop.org
+name: ArcadeCore
+version: 0.0
+main: me.softsheep6.arcadecore.ArcadeCore
+api-version: 1.21.11
+description: Core plugin for the Arcade SMP
+author: softsheep6
+contributors: []
+website: https://softsheep6.github.io
