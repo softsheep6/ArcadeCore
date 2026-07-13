@@ -1,15 +1,34 @@
 package me.softsheep6.arcadecore
 
+import me.softsheep6.arcadecore.commands.AbilityCommand
+import me.softsheep6.arcadecore.commands.GameCommand
+import me.softsheep6.arcadecore.games.CooldownManager
+import me.softsheep6.arcadecore.games.GameManager
 import org.bukkit.Bukkit
-import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.plugin.java.JavaPlugin
 
-class ArcadeCore : JavaPlugin(), Listener{
+class ArcadeCore : JavaPlugin(), Listener {
+
 
     override fun onEnable() {
-        println("meow meow meow meow")
-        Bukkit.getPluginManager().registerEvents(this, this)
+
+        this.logger.info("ArcadeCore plugin enabled meow")
+
+        getCommand("ability")!!.setExecutor(AbilityCommand(this))
+        getCommand("game")!!.setExecutor(GameCommand(this))
+        Bukkit.getPluginManager().registerEvents(GameManager(this), this)
+        Bukkit.getPluginManager().registerEvents(CooldownManager(this), this)
+
+
+
+
+
+        //TODO("implement Pluey")
+        // this needs to be commented or the plugin wont load. implementing pluey is no joke
+
+        // times used google ai overview: 1
+        // for every time i use ai overview i will slap myself in the face with a pillow shaped cinder block 20 times in a row 👍
     }
+
 }

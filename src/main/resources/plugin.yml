@@ -6,3 +6,8 @@ description: Core plugin for the Arcade SMP
 author: softsheep6
 contributors: []
 website: https://softsheep6.github.io
+commands:
+  ability:
+    description: Runs an emblem's ability. shocking.
+  game:
+    description: Get/set/clear a player's game
