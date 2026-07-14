@@ -33,8 +33,9 @@ class AbilityCommand(private val plugin: ArcadeCore) : CommandExecutor {
             return true
         }
 
+
+        // activate ability depending on what game the player has equipped
         if (args[0].equals("a", ignoreCase = true)) {
-            // activate ability depending on what game the player has equipped
             when (GameManager(plugin).getGame(p)) {
                 Game.BENDY -> Bendy(plugin).abilityA(p)
                 Game.HOLLOW_KNIGHT -> TODO()
@@ -54,7 +55,6 @@ class AbilityCommand(private val plugin: ArcadeCore) : CommandExecutor {
             }
             return true
         } else if (args[0].equals("b", ignoreCase = true)) {
-// activate ability depending on what game the player has equipped
             when (GameManager(plugin).getGame(p)) {
                 Game.BENDY -> Bendy(plugin).abilityB(p)
                 Game.HOLLOW_KNIGHT -> TODO()
