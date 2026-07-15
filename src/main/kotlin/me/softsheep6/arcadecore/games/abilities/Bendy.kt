@@ -4,14 +4,20 @@ import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.Ability
 import me.softsheep6.arcadecore.games.AbstractGame
 import me.softsheep6.arcadecore.games.CooldownManager
+import me.softsheep6.arcadecore.games.OtherStuff
+import me.softsheep6.arcadecore.games.listeners.BendyListeners.Foo.ignoredPlayers
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
+import org.bukkit.entity.Skeleton
 import org.bukkit.inventory.BlockInventoryHolder
+import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.scheduler.BukkitRunnable
@@ -33,10 +39,11 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
             // configurable values
             val radius = 5
             val height = 2
-            val dur: Long = 100 // in ticks
+            val dur: Long = 300 // in ticks
             val particleSpeed = 0.1
+            val blockTypes = ArrayList<Material>(listOf(Material.BLACK_CONCRETE, Material.COAL_BLOCK, Material.BLACK_WOOL))
 
-            // black concrete cylinder
+            // black cylinder
             val loc = p.location
             val blockLocs: ArrayList<Location> = ArrayList()
             val blockMaterials: ArrayList<Material> = ArrayList()
@@ -53,14 +60,15 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
                                 inventoryHolder.inventory.contents.forEach {
                                     if (it != null) blockLoc.world.dropItemNaturally(blockLoc, it) }
                             }
-                            blockLoc.block.type = Material.BLACK_CONCRETE
+                            val randBlock = (Math.random() * blockTypes.size).toInt()
+                            blockLoc.block.type = blockTypes[randBlock]
                         }
                     }
                 }
             }
+
             // sfx
             loc.world.playSound(loc, Sound.ENTITY_ELDER_GUARDIAN_CURSE, 1f, 0f)
-
 
             // damage & blind nearby untrusted players. and particles too.
             object: BukkitRunnable() {
@@ -92,7 +100,9 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
 
             }.runTaskTimer(plugin, 0L, 1L)
 
-            // replaces black concrete with what the blocks were before
+
+
+            // replaces black concrete with what the blocks were before, after dur ticks have passed
             object : BukkitRunnable() {
                 override fun run() {
                     for (i in blockMaterials.indices) {
@@ -105,14 +115,62 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
         }
     }
 
+
+
     override fun abilityB(p: Player) {
         if (CooldownManager(plugin).isAbilityOnCD(p, Ability.ABILITY_B)) {
             p.sendMessage(Component.text("Ability B is on cooldown!").color(NamedTextColor.RED))
             return
         } else {
             p.sendMessage(Component.text("Ability B activated!").color(NamedTextColor.GREEN))
+            ignoredPlayers.add(p)
+            // add trusted players to the arraylist too
+
+            // configurable values
+            val dur = 200L // in ticks
+            val minions = ArrayList<Mob>()
+            val minionCount = 7
+            val minionRadius = 2 // how many blocks from the player the minions are
+
+            for (i in 0..<minionCount) {
+                p.world.spawn(p.location, Skeleton::class.java, false) {
+                    minions.add(it)
+                    val equipment = it.equipment
+                    equipment.setItemInMainHand(ItemStack(Material.BOW)) // TODO configurable power level so damage can be modified
+                    val helmet = ItemStack.of(Material.LEATHER_HELMET)
+                    helmet.addEnchantment(Enchantment.MENDING, 1) // adds a nonnatural enchant to know if a skeleton is a minion or a naturally spawned skeleton
+                    equipment.helmet = helmet
+                    it.isInvulnerable = true
+                    it.isSilent = true
+                    it.isCollidable = false
+
+                }
+            }
 
 
+            // teleport minions around player
+            object : BukkitRunnable() {
+                var index = 0
+                override fun run() {
+                    val locations = OtherStuff().getPoints(p.location.x, p.location.y, p.location.z, minionRadius, minionCount, p.world)
+                    minions.forEachIndexed { i, it ->
+                        it.teleport(locations[i].clone().setRotation(0F, 0F))
+                    }
+                    index++
+                    if (index >= dur) cancel()
+                }
+            }.runTaskTimer(plugin, 0L, 1L)
+
+
+            // end ability
+            object : BukkitRunnable() {
+                override fun run() {
+                    minions.forEach {
+                        it.remove()
+                        ignoredPlayers.remove(p)
+                    }
+                }
+            }.runTaskLater(plugin, dur)
 
             CooldownManager(plugin).setAbilityCD(p, Ability.ABILITY_B, abilityBCD)
         }

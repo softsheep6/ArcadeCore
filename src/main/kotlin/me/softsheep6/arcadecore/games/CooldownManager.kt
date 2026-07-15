@@ -31,6 +31,10 @@ class CooldownManager(private val plugin: ArcadeCore) : Listener {
         if (!pdc.has(keyB)) {
             pdc.set(keyB, PersistentDataType.INTEGER, 0)
         }
+        if (pdc.has(keyA) && pdc.has(keyB)) {
+            pdc.set(keyA, PersistentDataType.INTEGER, 0)
+            pdc.set(keyB, PersistentDataType.INTEGER, 0)
+        }
     }
 
     fun setAbilityCD(p: Player, ab: Ability, cd: Int) {
