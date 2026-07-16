@@ -2,7 +2,9 @@ package me.softsheep6.arcadecore.games
 
 import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.abilities.Bendy
+import me.softsheep6.arcadecore.games.abilities.HollowKnight
 import org.bukkit.NamespacedKey
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -41,6 +43,7 @@ class GameManager(private val plugin: ArcadeCore) : Listener {
         when (game) {
             Game.NONE -> return
             Game.BENDY -> p.removePotionEffect(PotionEffectType.RESISTANCE)
+            Game.HOLLOW_KNIGHT -> p.getAttribute(Attribute.SNEAKING_SPEED)?.baseValue = 0.3
             // more
             else -> {}
         }
@@ -55,6 +58,7 @@ class GameManager(private val plugin: ArcadeCore) : Listener {
         when (game) {
             Game.NONE -> clearGame(p)
             Game.BENDY -> Bendy(plugin).passiveA(p)
+            Game.HOLLOW_KNIGHT -> HollowKnight(plugin).passiveA(p)
             // more
             else -> {}
         }

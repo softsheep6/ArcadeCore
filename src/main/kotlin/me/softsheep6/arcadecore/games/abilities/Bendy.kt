@@ -13,6 +13,7 @@ import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.ItemDisplay
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import org.bukkit.entity.Skeleton
@@ -27,6 +28,19 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
     // cooldowns in seconds
     val abilityACD = 3
     val abilityBCD = 3
+
+    // KNOWN BUGS //
+    /*
+    ABILITY 1
+    -- overlapping ink circles can leave blocks behind after ability ends
+    -- ink circle blocks can be broken (prevent with listeners for blockbreak, blockexplode(?), whatever the event for piston is)
+    ABILITY 2
+    -- minion arrows can hit ability user
+     */
+    // TODO:
+    //  the models. whenever ben remakes them in JSON format.
+    //  give the minion bows a configurable power enchant so damage can be modified
+    //  also trusted player stuffs
 
     override fun abilityA(p: Player) {
         if (CooldownManager(plugin).isAbilityOnCD(p, Ability.ABILITY_A)) {
@@ -79,7 +93,7 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
                     // apply negative effects to nearby players
                     val nearbyPlayers = loc.getNearbyPlayers(radius.toDouble(), height.toDouble())
                     nearbyPlayers.remove(p)
-                    // TODO remove trusted players from the list
+                    // remove trusted players from the list here
                     nearbyPlayers.forEach {
                         it.addPotionEffect(PotionEffect(PotionEffectType.WITHER, 100, 2))
                         it.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 100, 0))
@@ -111,6 +125,7 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
                 }
             }.runTaskLater(plugin, dur)
 
+
             CooldownManager(plugin).setAbilityCD(p, Ability.ABILITY_A, abilityACD)
         }
     }
@@ -128,14 +143,16 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
             // configurable values
             val dur = 300L // in ticks
             val minions = ArrayList<Mob>()
+            val minionDisplays = ArrayList<ItemDisplay>()
             val minionCount = 4
             val minionRadius = 4 // how many blocks from the player the minions are
 
+            // spawn minions and display entities
             for (i in 0..<minionCount) {
                 p.world.spawn(p.location, Skeleton::class.java, false) {
                     minions.add(it)
                     val equipment = it.equipment
-                    equipment.setItemInMainHand(ItemStack(Material.BOW)) // TODO configurable power level so damage can be modified
+                    equipment.setItemInMainHand(ItemStack(Material.BOW)) // configurable power level so damage can be modified here
                     val helmet = ItemStack.of(Material.LEATHER_HELMET)
                     helmet.addEnchantment(Enchantment.MENDING, 1) // adds a nonnatural enchant to know if a skeleton is a minion or a naturally spawned skeleton
                     equipment.helmet = helmet
@@ -144,21 +161,45 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
                     it.isCollidable = false
                     it.isVisibleByDefault = false
                 }
+                p.world.spawn(p.location, ItemDisplay::class.java, false) {
+                    minionDisplays.add(it)
+                    val item = ItemStack.of(Material.WOODEN_SWORD)
+                    val cmd = item.itemMeta.customModelDataComponent
+                    val strings = ArrayList<String>()
+                    strings.add("bendy-minion")
+                    cmd.strings = strings
+                    it.setItemStack(item)
+
+                }
             }
 
 
-            // teleport minions/displays around player
+            // teleport minions/display entities around player
             object : BukkitRunnable() {
                 var index = 0
                 override fun run() {
                     val locations = OtherStuff().getPoints(p.location.x, p.location.y, p.location.z, minionRadius, minionCount, p.world)
                     minions.forEachIndexed { i, it ->
-                        it.teleport(locations[i].clone().setRotation(0F, 0F))
+                        if (!it.isValid) {
+                            cancel()
+                            return
+                        }
+                        it.teleport(Location(p.world, locations[i].x, locations[i].y, locations[i].z))
+                    }
+                    minionDisplays.forEachIndexed { i, it ->
+                        if (!it.isValid) {
+                            cancel()
+                            return
+                        }
+                        it.teleport(Location(p.world, locations[i].x, locations[i].y, locations[i].z))
                     }
                     index++
                     if (index >= dur) cancel()
                 }
             }.runTaskTimer(plugin, 0L, 1L)
+
+            // sfx
+            p.world.playSound(p.location, Sound.ENTITY_EVOKER_CAST_SPELL, 1f, 0f)
 
 
             // end ability
@@ -168,8 +209,10 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
                         it.remove()
                         ignoredPlayers.remove(p)
                     }
+                    minionDisplays.forEach { it.remove() }
                 }
             }.runTaskLater(plugin, dur)
+
 
             CooldownManager(plugin).setAbilityCD(p, Ability.ABILITY_B, abilityBCD)
         }
@@ -191,7 +234,6 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
         val chance = 16.9 // as a percentage
 
         val random = (Math.random() * 100)
-        println(random)
         if (random < chance) p.addPotionEffect(PotionEffect(PotionEffectType.ABSORPTION, dur, amp))
     }
 }

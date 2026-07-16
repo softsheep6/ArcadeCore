@@ -45,7 +45,7 @@ class BendyListeners(private val plugin: ArcadeCore) : Listener {
         arrow.isSilent = true
 
         // spawn display entity with custom model
-        val arrowDisplay: ItemDisplay = e.entity.world.spawn(e.entity.location, ItemDisplay::class.java, false, {
+        val arrowDisplay: ItemDisplay = e.entity.world.spawn(e.entity.location, ItemDisplay::class.java, false) {
             val item = ItemStack.of(Material.WOODEN_SWORD)
             val cmd = item.itemMeta.customModelDataComponent
             val strings = ArrayList<String>()
@@ -53,7 +53,7 @@ class BendyListeners(private val plugin: ArcadeCore) : Listener {
             cmd.strings = strings
             it.setItemStack(item)
 
-        })
+        }
 
         // tp loop
         object : BukkitRunnable() {
@@ -66,6 +66,14 @@ class BendyListeners(private val plugin: ArcadeCore) : Listener {
                 arrowDisplay.teleport(arrow) // teleport display to arrow
             }
         }.runTaskTimer(plugin, 0L, 1L)
+
+        // kill arrow after a while (idk how laggy display entities are but just in case)
+        object : BukkitRunnable() {
+            override fun run() {
+                if (arrow.isValid) arrow.remove()
+                if (arrowDisplay.isValid) arrowDisplay.remove()
+            }
+        }.runTaskLater(plugin, 600L)
     }
 
 

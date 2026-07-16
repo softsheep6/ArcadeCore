@@ -3,6 +3,7 @@ package me.softsheep6.arcadecore.games
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent
 import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.abilities.Bendy
+import me.softsheep6.arcadecore.games.abilities.HollowKnight
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -35,6 +36,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
         if (e.cause != EntityPotionEffectEvent.Cause.MILK && e.cause != EntityPotionEffectEvent.Cause.TOTEM) return
         val game = GameManager(plugin).getGame(p)
 
+        // delay on giving the effects back otherwise bad things happen
         object : BukkitRunnable() {
             override fun run() {
                 when (game) {
@@ -63,15 +65,16 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
     // many abilities involve effects being applied after hitting/critting someone too, so this should go here as well
     @EventHandler
     fun onPlayerDamageByPlayer(e: EntityDamageByEntityEvent) {
-        val p = e.entity
+        val victim = e.entity
         val damager = e.damager
-        if (p !is Player || damager !is Player) return
-        val game = GameManager(plugin).getGame(p)
+        if (victim !is Player || damager !is Player) return
+        val game = GameManager(plugin).getGame(damager)
 
         // either the player or the damager can be passed into the passive methods, depending on if the effect is positive or negative
         when (game) {
             Game.NONE -> return
             Game.BENDY -> if (e.isCritical) Bendy(plugin).passiveB(damager)
+            Game.HOLLOW_KNIGHT -> HollowKnight(plugin).passiveB(victim)
             // more
             else -> {}
         }
