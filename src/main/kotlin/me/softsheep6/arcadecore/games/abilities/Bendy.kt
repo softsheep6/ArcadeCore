@@ -116,7 +116,6 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
     }
 
 
-
     override fun abilityB(p: Player) {
         if (CooldownManager(plugin).isAbilityOnCD(p, Ability.ABILITY_B)) {
             p.sendMessage(Component.text("Ability B is on cooldown!").color(NamedTextColor.RED))
@@ -127,10 +126,10 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
             // add trusted players to the arraylist too
 
             // configurable values
-            val dur = 200L // in ticks
+            val dur = 300L // in ticks
             val minions = ArrayList<Mob>()
-            val minionCount = 7
-            val minionRadius = 2 // how many blocks from the player the minions are
+            val minionCount = 4
+            val minionRadius = 4 // how many blocks from the player the minions are
 
             for (i in 0..<minionCount) {
                 p.world.spawn(p.location, Skeleton::class.java, false) {
@@ -143,12 +142,12 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
                     it.isInvulnerable = true
                     it.isSilent = true
                     it.isCollidable = false
-
+                    it.isVisibleByDefault = false
                 }
             }
 
 
-            // teleport minions around player
+            // teleport minions/displays around player
             object : BukkitRunnable() {
                 var index = 0
                 override fun run() {
@@ -176,11 +175,23 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
         }
     }
 
-    override fun passiveA() {
-        TODO("Not yet implemented")
+
+    override fun passiveA(p: Player) {
+        // configurable
+        val dur = -1 // in ticks
+        val amp = 0
+
+        p.addPotionEffect(PotionEffect(PotionEffectType.RESISTANCE, dur, amp))
     }
 
-    override fun passiveB() {
-        TODO("Not yet implemented")
+    override fun passiveB(p: Player) {
+        // configurable
+        val dur = 100 // in ticks
+        val amp = 2
+        val chance = 16.9 // as a percentage
+
+        val random = (Math.random() * 100)
+        println(random)
+        if (random < chance) p.addPotionEffect(PotionEffect(PotionEffectType.ABSORPTION, dur, amp))
     }
 }

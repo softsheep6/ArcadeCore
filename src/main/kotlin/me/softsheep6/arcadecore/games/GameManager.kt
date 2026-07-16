@@ -1,12 +1,14 @@
 package me.softsheep6.arcadecore.games
 
 import me.softsheep6.arcadecore.ArcadeCore
+import me.softsheep6.arcadecore.games.abilities.Bendy
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.potion.PotionEffectType
 import java.util.Locale.getDefault
 
 class GameManager(private val plugin: ArcadeCore) : Listener {
@@ -34,10 +36,28 @@ class GameManager(private val plugin: ArcadeCore) : Listener {
 
 
     fun clearGame(p: Player) {
+        // remove permanent passive stuff
+        val game = getGame(p)
+        when (game) {
+            Game.NONE -> return
+            Game.BENDY -> p.removePotionEffect(PotionEffectType.RESISTANCE)
+            // more
+            else -> {}
+        }
+
         p.persistentDataContainer.remove(key)
     }
     fun setGame(p: Player, g: Game) {
         p.persistentDataContainer.set(key, PersistentDataType.STRING, g.name)
+
+        // apply permanent passive stuff
+        val game = getGame(p)
+        when (game) {
+            Game.NONE -> clearGame(p)
+            Game.BENDY -> Bendy(plugin).passiveA(p)
+            // more
+            else -> {}
+        }
     }
     fun getGame(p: Player): Game {
         if (hasGame(p))

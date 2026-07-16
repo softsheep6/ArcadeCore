@@ -2,6 +2,7 @@ package me.softsheep6.arcadecore.games
 
 import org.bukkit.Location
 import org.bukkit.World
+import org.bukkit.entity.Player
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -26,5 +27,25 @@ class OtherStuff {
             locations.add(Location(world, xyCoords[i], y, zCoords[i]))
         }
         return locations
+    }
+
+    // ok sure this can go here too
+    fun getNearestPlayer(p: Player, r: Double): Player? {
+
+        val players = p.world.getNearbyPlayers(p.location, r)
+        players.remove(p)
+        if (players.isEmpty()) return null
+        else {
+            var nearest: Player = players.first()
+            var nearestDistance: Double = nearest.location.distance(p.location)
+            players.forEach {
+                if (it.location.distance(p.location) < nearestDistance) {
+                    nearest = it
+                    nearestDistance = nearest.location.distance(p.location)
+                }
+            }
+            return nearest
+        }
+
     }
 }

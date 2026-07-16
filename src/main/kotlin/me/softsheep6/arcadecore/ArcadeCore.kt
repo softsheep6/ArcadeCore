@@ -4,6 +4,7 @@ import me.softsheep6.arcadecore.commands.AbilityCommand
 import me.softsheep6.arcadecore.commands.GameCommand
 import me.softsheep6.arcadecore.games.CooldownManager
 import me.softsheep6.arcadecore.games.GameManager
+import me.softsheep6.arcadecore.games.PassiveManager
 import me.softsheep6.arcadecore.games.listeners.BendyListeners
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
@@ -20,7 +21,8 @@ class ArcadeCore : JavaPlugin(), Listener {
         getCommand("game")!!.setExecutor(GameCommand(this))
         Bukkit.getPluginManager().registerEvents(GameManager(this), this)
         Bukkit.getPluginManager().registerEvents(CooldownManager(this), this)
-        Bukkit.getPluginManager().registerEvents(BendyListeners(), this)
+        Bukkit.getPluginManager().registerEvents(BendyListeners(this), this)
+        Bukkit.getPluginManager().registerEvents(PassiveManager(this), this)
 
 
 

@@ -8,8 +8,7 @@ abstract class AbstractGame {
 
     abstract fun abilityB(p: Player)
 
-    abstract fun passiveA()
+    abstract fun passiveA(p: Player)
 
-    abstract fun passiveB()
-
+    abstract fun passiveB(p: Player)
 }
