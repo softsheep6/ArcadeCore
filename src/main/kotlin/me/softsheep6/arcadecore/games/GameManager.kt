@@ -51,10 +51,11 @@ class GameManager(private val plugin: ArcadeCore) : Listener {
         p.persistentDataContainer.remove(key)
     }
     fun setGame(p: Player, g: Game) {
+        clearGame(p)
         p.persistentDataContainer.set(key, PersistentDataType.STRING, g.name)
 
         // apply permanent passive stuff
-        val game = getGame(p)
+        val game = g
         when (game) {
             Game.NONE -> clearGame(p)
             Game.BENDY -> Bendy(plugin).passiveA(p)

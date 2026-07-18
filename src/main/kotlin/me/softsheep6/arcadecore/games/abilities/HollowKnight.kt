@@ -54,7 +54,7 @@ class HollowKnight(private val plugin: ArcadeCore) : AbstractGame() {
             player = p
 
             // particles
-            val points = OtherStuff().getPoints(p.x, p.y + 1.5, p.z, radius.toInt(), particleCount, p.world)
+            val points = OtherStuff().getPoints(p.x, p.y + 1.5, p.z, radius, particleCount, p.world)
             points.forEach {
                 Particle.CLOUD.builder()
                     .location(it)

@@ -46,13 +46,19 @@ class BendyListeners(private val plugin: ArcadeCore) : Listener {
 
         // spawn display entity with custom model
         val arrowDisplay: ItemDisplay = e.entity.world.spawn(e.entity.location, ItemDisplay::class.java, false) {
+            // item and cmd stuff
             val item = ItemStack.of(Material.WOODEN_SWORD)
-            val cmd = item.itemMeta.customModelDataComponent
+            val meta = item.itemMeta
             val strings = ArrayList<String>()
+            val cmd = meta.customModelDataComponent
+
             strings.add("bendy-projectile")
             cmd.strings = strings
+            meta.setCustomModelDataComponent(cmd)
+            item.itemMeta = meta
             it.setItemStack(item)
 
+            it.teleportDuration = 1
         }
 
         // tp loop

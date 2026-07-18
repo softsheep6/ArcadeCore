@@ -8,10 +8,7 @@ import me.softsheep6.arcadecore.games.OtherStuff
 import me.softsheep6.arcadecore.games.listeners.BendyListeners.Foo.ignoredPlayers
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.Particle
-import org.bukkit.Sound
+import org.bukkit.*
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.ItemDisplay
 import org.bukkit.entity.Mob
@@ -22,6 +19,10 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.util.Transformation
+import org.joml.AxisAngle4f
+import org.joml.Vector3f
+
 
 class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
 
@@ -142,13 +143,24 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
 
             // configurable values
             val dur = 300L // in ticks
+            val minionCount = 4
+            val minionRadius = 2.5 // how many blocks from the player the minions are
+            val minionScale = 2.5f
+            val minionWingScale = 2.5f
+            val minionWingAnimationPeriod = 20 // in ticks, amount of time for animation to loop
+            val particleSpeed = 0.1
+            val particleCount = 1 // spawns every tick, so keep this low
+            val particleOffset = 0.25 // in blocks
+
+
             val minions = ArrayList<Mob>()
             val minionDisplays = ArrayList<ItemDisplay>()
-            val minionCount = 4
-            val minionRadius = 4 // how many blocks from the player the minions are
+            val minionWingsF1 = ArrayList<ItemDisplay>()
+            val minionWingsF2 = ArrayList<ItemDisplay>()
 
             // spawn minions and display entities
             for (i in 0..<minionCount) {
+                // spawn invisible skeletons
                 p.world.spawn(p.location, Skeleton::class.java, false) {
                     minions.add(it)
                     val equipment = it.equipment
@@ -161,24 +173,25 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
                     it.isCollidable = false
                     it.isVisibleByDefault = false
                 }
-                p.world.spawn(p.location, ItemDisplay::class.java, false) {
-                    minionDisplays.add(it)
-                    val item = ItemStack.of(Material.WOODEN_SWORD)
-                    val cmd = item.itemMeta.customModelDataComponent
-                    val strings = ArrayList<String>()
-                    strings.add("bendy-minion")
-                    cmd.strings = strings
-                    it.setItemStack(item)
 
+                // spawn minion bodies and wings
+                minionDisplays.addAll(spawnItemDisplays(p, "bendy-minion", i, minionScale))
+                minionWingsF1.addAll(spawnItemDisplays(p, "bendy-wings-1", i, minionWingScale))
+                minionWingsF2.addAll(spawnItemDisplays(p, "bendy-wings-2", i, minionWingScale))
+                // frame 2 starts out invisible
+                minionWingsF2.forEach {
+                    it.isVisibleByDefault = false
                 }
             }
 
 
-            // teleport minions/display entities around player
+            // teleport/rotate minions/display entities around player, also spawn particles
             object : BukkitRunnable() {
                 var index = 0
                 override fun run() {
                     val locations = OtherStuff().getPoints(p.location.x, p.location.y, p.location.z, minionRadius, minionCount, p.world)
+
+                    // skeletons
                     minions.forEachIndexed { i, it ->
                         if (!it.isValid) {
                             cancel()
@@ -186,17 +199,71 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
                         }
                         it.teleport(Location(p.world, locations[i].x, locations[i].y, locations[i].z))
                     }
+
+                    // minion bodies
                     minionDisplays.forEachIndexed { i, it ->
                         if (!it.isValid) {
                             cancel()
                             return
                         }
-                        it.teleport(Location(p.world, locations[i].x, locations[i].y, locations[i].z))
+
+                        // tp/rotate
+                        it.teleport(Location(p.world, locations[i].x, locations[i].y + 2.5, locations[i].z))
+                        it.setRotation((360f/minionCount) * (i-1), 0f)
+
+                        // particles
+                        Particle.ENTITY_EFFECT.builder()
+                            .location(it.location.clone().add(0.0,-1.0,0.0))
+                            .color(0,0,0)
+                            .count(particleCount)
+                            .extra(particleSpeed)
+                            .offset(particleOffset, particleOffset, particleOffset)
+                            .spawn()
                     }
+
+                    // minion wings
+                    minionWingsF1.forEachIndexed { i, it ->
+                        if (!it.isValid) {
+                            cancel()
+                            return
+                        }
+                        it.teleport(Location(p.world, locations[i].x, locations[i].y + 2.5, locations[i].z))
+                        it.setRotation((360f/minionCount) * (i-1), 0f)
+                    }
+                    // minion wings
+                    minionWingsF2.forEachIndexed { i, it ->
+                        if (!it.isValid) {
+                            cancel()
+                            return
+                        }
+                        it.teleport(Location(p.world, locations[i].x, locations[i].y + 2.5, locations[i].z))
+                        it.setRotation((360f/minionCount) * (i-1), 0f)
+                    }
+
                     index++
                     if (index >= dur) cancel()
                 }
             }.runTaskTimer(plugin, 0L, 1L)
+
+            // minion wings animation
+            object : BukkitRunnable() {
+                var index = 0
+                override fun run() {
+                    Bukkit.getOnlinePlayers().forEach {
+                        if (index % 2 == 0) {
+                            minionWingsF1.forEach { entity -> it.showEntity(plugin, entity) }
+                            minionWingsF2.forEach { entity -> it.hideEntity(plugin, entity) }
+                        } else {
+                            minionWingsF1.forEach { entity -> it.hideEntity(plugin, entity) }
+                            minionWingsF2.forEach { entity -> it.showEntity(plugin, entity) }
+                        }
+                    }
+                    index++
+                    if (index >= dur/(minionWingAnimationPeriod/2)) cancel()
+                    // new flavor foley song just dropped omg its so peak they cannot make 1 bad song (other than maybe electric weekend zone but i think it isnt as bad as people say it is)
+                    // let the base go !!!!!!!!!!!
+                }
+            }.runTaskTimer(plugin, 0L, minionWingAnimationPeriod/2.toLong())
 
             // sfx
             p.world.playSound(p.location, Sound.ENTITY_EVOKER_CAST_SPELL, 1f, 0f)
@@ -210,6 +277,8 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
                         ignoredPlayers.remove(p)
                     }
                     minionDisplays.forEach { it.remove() }
+                    minionWingsF1.forEach { it.remove() }
+                    minionWingsF2.forEach { it.remove() }
                 }
             }.runTaskLater(plugin, dur)
 
@@ -235,5 +304,30 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
 
         val random = (Math.random() * 100)
         if (random < chance) p.addPotionEffect(PotionEffect(PotionEffectType.ABSORPTION, dur, amp))
+    }
+    
+    fun spawnItemDisplays(p: Player, str: String, i: Int, scale: Float): ArrayList<ItemDisplay> {
+        val minionDisplays = ArrayList<ItemDisplay>()
+        p.world.spawn(p.location.clone().add(0.0,2.5,0.0), ItemDisplay::class.java, false) {
+            minionDisplays.add(it)
+
+            // item and cmd stuff
+            val item = ItemStack.of(Material.WOODEN_SWORD)
+            val meta = item.itemMeta
+            val strings = ArrayList<String>()
+            val cmd = meta.customModelDataComponent
+
+            strings.add(str)
+            cmd.strings = strings
+            meta.setCustomModelDataComponent(cmd)
+            item.itemMeta = meta
+            it.setItemStack(item)
+
+            // the rest
+            it.transformation = Transformation(Vector3f(), AxisAngle4f(), Vector3f(scale, scale, scale), AxisAngle4f())
+            it.setRotation(90f * (i-1), 0f)
+            it.teleportDuration = 1
+        }
+        return minionDisplays
     }
 }

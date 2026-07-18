@@ -11,7 +11,7 @@ class OtherStuff {
     // i just know im gonna use this circle method at least a few times so here it gets its own class unless i add other things here too idk
     // taken from the plugin i made for jplays squid games which was also taken from uhhh idk some random stack overflow post
     // but i converted it into kotlin so yea im slightly less of a skid (very very slightly)
-    fun getPoints(x0: Double, y: Double, z0: Double, r: Int, noOfDividingPoints: Int, world: World): List<Location> {
+    fun getPoints(x0: Double, y: Double, z0: Double, r: Double, noOfDividingPoints: Int, world: World): List<Location> {
         var angle: Double
 
         val xyCoords = ArrayList<Double>(noOfDividingPoints)
