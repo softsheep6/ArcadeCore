@@ -39,8 +39,9 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
     -- minion arrows can hit ability user
      */
     // TODO:
-    //  the models. whenever ben remakes them in JSON format.
     //  give the minion bows a configurable power enchant so damage can be modified
+    //  maybe make minions oscillate up and down? could be a cool effect, however itd have to have
+    //    some kind of easing to not look weird. sorta like the way hypixel skyblock pets move
     //  also trusted player stuffs
 
     override fun abilityA(p: Player) {

@@ -5,6 +5,7 @@ import me.softsheep6.arcadecore.games.Game
 import me.softsheep6.arcadecore.games.GameManager
 import me.softsheep6.arcadecore.games.abilities.Bendy
 import me.softsheep6.arcadecore.games.abilities.HollowKnight
+import me.softsheep6.arcadecore.games.abilities.Mario
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.Command
@@ -40,7 +41,7 @@ class AbilityCommand(private val plugin: ArcadeCore) : CommandExecutor {
             when (GameManager(plugin).getGame(p)) {
                 Game.BENDY -> Bendy(plugin).abilityA(p)
                 Game.HOLLOW_KNIGHT -> HollowKnight(plugin).abilityA(p)
-                Game.MARIO -> TODO()
+                Game.MARIO -> Mario(plugin).abilityA(p)
                 Game.ZELDA -> TODO()
                 Game.CASTLE_CRASHERS -> TODO()
                 Game.VALORANT -> TODO()
@@ -59,7 +60,7 @@ class AbilityCommand(private val plugin: ArcadeCore) : CommandExecutor {
             when (GameManager(plugin).getGame(p)) {
                 Game.BENDY -> Bendy(plugin).abilityB(p)
                 Game.HOLLOW_KNIGHT -> HollowKnight(plugin).abilityB(p)
-                Game.MARIO -> TODO()
+                Game.MARIO -> Mario(plugin).abilityB(p)
                 Game.ZELDA -> TODO()
                 Game.CASTLE_CRASHERS -> TODO()
                 Game.VALORANT -> TODO()
