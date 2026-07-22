@@ -7,6 +7,7 @@ import me.softsheep6.arcadecore.games.GameManager
 import me.softsheep6.arcadecore.games.PassiveManager
 import me.softsheep6.arcadecore.games.listeners.BendyListeners
 import me.softsheep6.arcadecore.games.listeners.HollowKnightListeners
+import me.softsheep6.arcadecore.games.listeners.MarioListeners
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
@@ -25,6 +26,7 @@ class ArcadeCore : JavaPlugin(), Listener {
         Bukkit.getPluginManager().registerEvents(PassiveManager(this), this)
         Bukkit.getPluginManager().registerEvents(BendyListeners(this), this)
         Bukkit.getPluginManager().registerEvents(HollowKnightListeners(), this)
+        Bukkit.getPluginManager().registerEvents(MarioListeners(this), this)
 
 
 

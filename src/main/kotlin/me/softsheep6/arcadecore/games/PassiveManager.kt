@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent
 import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.abilities.Bendy
 import me.softsheep6.arcadecore.games.abilities.HollowKnight
+import me.softsheep6.arcadecore.games.abilities.Mario
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -25,6 +26,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
         when (game) {
             Game.NONE -> return
             Game.BENDY -> Bendy(plugin).passiveA(p)
+            Game.MARIO -> Mario(plugin).passiveA(p)
             // more
             else -> {}
         }
@@ -42,6 +44,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
                 when (game) {
                     Game.NONE -> return
                     Game.BENDY -> Bendy(plugin).passiveA(p)
+                    Game.MARIO -> Mario(plugin).passiveA(p)
                     // more
                     else -> {}
                 }
@@ -56,6 +59,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
         when (game) {
             Game.NONE -> return
             Game.BENDY -> Bendy(plugin).passiveA(p)
+            Game.MARIO -> Mario(plugin).passiveA(p)
             // more
             else -> {}
         }
