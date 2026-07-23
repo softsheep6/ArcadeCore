@@ -4,7 +4,7 @@ import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.Ability
 import me.softsheep6.arcadecore.games.AbstractGame
 import me.softsheep6.arcadecore.games.CooldownManager
-import me.softsheep6.arcadecore.games.OtherStuff
+import me.softsheep6.arcadecore.games.MiscUtils
 import me.softsheep6.arcadecore.games.listeners.HollowKnightListeners.Foo.player
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -54,7 +54,7 @@ class HollowKnight(private val plugin: ArcadeCore) : AbstractGame() {
             player = p
 
             // particles
-            val points = OtherStuff().getPoints(p.x, p.y + 1.5, p.z, radius, particleCount, p.world)
+            val points = MiscUtils().getPoints(p.x, p.y + 1.5, p.z, radius, particleCount, p.world)
             points.forEach {
                 Particle.CLOUD.builder()
                     .location(it)

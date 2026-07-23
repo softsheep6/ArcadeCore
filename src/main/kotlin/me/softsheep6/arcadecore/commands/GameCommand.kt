@@ -2,7 +2,7 @@ package me.softsheep6.arcadecore.commands
 
 import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.Game
-import me.softsheep6.arcadecore.games.GameManager
+import me.softsheep6.arcadecore.games.GameUtils
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
@@ -48,7 +48,7 @@ class GameCommand(private val plugin: ArcadeCore) : TabExecutor {
 
         // /game get
         if (args[0].equals("get", ignoreCase = true)) {
-            p.sendMessage(Component.text("Player ${target.name} currently has ${GameManager(plugin).getGame(target)} equipped", NamedTextColor.GREEN))
+            p.sendMessage(Component.text("Player ${target.name} currently has ${GameUtils(plugin).getGame(target)} equipped", NamedTextColor.GREEN))
             return true
         }
 
@@ -71,7 +71,7 @@ class GameCommand(private val plugin: ArcadeCore) : TabExecutor {
             }
 
             // set game !
-            GameManager(plugin).setGame(target, game)
+            GameUtils(plugin).setGame(target, game)
             p.sendMessage(Component.text("Successfully set ${target.name} to $game", NamedTextColor.GREEN))
             return true
         }
@@ -79,7 +79,7 @@ class GameCommand(private val plugin: ArcadeCore) : TabExecutor {
 
         // /game clear
         if (args[0].equals("clear", ignoreCase = true)) {
-            GameManager(plugin).clearGame(target)
+            GameUtils(plugin).clearGame(target)
             p.sendMessage(Component.text("Successfully cleared ${target.name}'s game", NamedTextColor.GREEN))
             return true
         }

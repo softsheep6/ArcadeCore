@@ -1,7 +1,7 @@
 package me.softsheep6.arcadecore.games.listeners
 
 import me.softsheep6.arcadecore.ArcadeCore
-import me.softsheep6.arcadecore.games.OtherStuff
+import me.softsheep6.arcadecore.games.MiscUtils
 import me.softsheep6.arcadecore.games.listeners.BendyListeners.Foo.ignoredPlayers
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
@@ -24,7 +24,7 @@ class BendyListeners(private val plugin: ArcadeCore) : Listener {
         if (e.entityType != EntityType.SKELETON || e.target?.type != EntityType.PLAYER) return
         if (ignoredPlayers.contains(e.target)) {
             // reassign target and cancel event
-            val nearestPlayer = OtherStuff().getNearestPlayer(e.target as Player, 50.0)
+            val nearestPlayer = MiscUtils().getNearestPlayer(e.target as Player, 50.0)
             e.target = nearestPlayer
             (e.entity as Mob).target = nearestPlayer
             e.isCancelled = true

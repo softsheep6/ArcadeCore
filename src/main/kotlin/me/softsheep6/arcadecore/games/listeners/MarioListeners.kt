@@ -2,7 +2,7 @@ package me.softsheep6.arcadecore.games.listeners
 
 import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.Game
-import me.softsheep6.arcadecore.games.GameManager
+import me.softsheep6.arcadecore.games.GameUtils
 import me.softsheep6.arcadecore.games.abilities.Mario
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
@@ -17,7 +17,7 @@ class MarioListeners(private val plugin: ArcadeCore) : Listener {
         val p = e.player
         val block = e.block
         // return if player who broke block doesn't have mario, or block broken wasn't an apple-dropping block
-        if (GameManager(plugin).getGame(p) != Game.MARIO || (block.type != Material.OAK_LEAVES && block.type != Material.DARK_OAK_LEAVES)) return
+        if (GameUtils(plugin).getGame(p) != Game.MARIO || (block.type != Material.OAK_LEAVES && block.type != Material.DARK_OAK_LEAVES)) return
 
         // 10% chance for apple
         val random = (Math.random() * 10).toInt()

@@ -18,6 +18,8 @@ class CooldownManager(private val plugin: ArcadeCore) : Listener {
         isAbilityOnCD(p, ability)
      */
 
+    // TODO: probably do something about cooldowns resetting upon rejoin.
+    //       i have it like that temporarily cause it was causing problems elsewhere, but it should definitely be changed before testing.
 
     // makes sure all players have cooldown pdcs
     val keyA = NamespacedKey(plugin, "ability-a")

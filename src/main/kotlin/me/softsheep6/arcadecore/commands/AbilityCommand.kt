@@ -2,10 +2,11 @@ package me.softsheep6.arcadecore.commands
 
 import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.Game
-import me.softsheep6.arcadecore.games.GameManager
+import me.softsheep6.arcadecore.games.GameUtils
 import me.softsheep6.arcadecore.games.abilities.Bendy
 import me.softsheep6.arcadecore.games.abilities.HollowKnight
 import me.softsheep6.arcadecore.games.abilities.Mario
+import me.softsheep6.arcadecore.games.abilities.Zelda
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.Command
@@ -26,7 +27,7 @@ class AbilityCommand(private val plugin: ArcadeCore) : CommandExecutor {
         }
 
         val p = sender
-         if (!(GameManager(plugin).hasGame(p))) {
+         if (!(GameUtils(plugin).hasGame(p))) {
           p.sendMessage(Component.text("You do not have a Game yet!").color(NamedTextColor.RED))
           return true
          }
@@ -38,11 +39,11 @@ class AbilityCommand(private val plugin: ArcadeCore) : CommandExecutor {
 
         // activate ability depending on what game the player has equipped
         if (args[0].equals("a", ignoreCase = true)) {
-            when (GameManager(plugin).getGame(p)) {
+            when (GameUtils(plugin).getGame(p)) {
                 Game.BENDY -> Bendy(plugin).abilityA(p)
                 Game.HOLLOW_KNIGHT -> HollowKnight(plugin).abilityA(p)
                 Game.MARIO -> Mario(plugin).abilityA(p)
-                Game.ZELDA -> TODO()
+                Game.ZELDA -> Zelda(plugin).abilityA(p)
                 Game.CASTLE_CRASHERS -> TODO()
                 Game.VALORANT -> TODO()
                 Game.SPIDERMAN -> TODO()
@@ -57,11 +58,11 @@ class AbilityCommand(private val plugin: ArcadeCore) : CommandExecutor {
             }
             return true
         } else if (args[0].equals("b", ignoreCase = true)) {
-            when (GameManager(plugin).getGame(p)) {
+            when (GameUtils(plugin).getGame(p)) {
                 Game.BENDY -> Bendy(plugin).abilityB(p)
                 Game.HOLLOW_KNIGHT -> HollowKnight(plugin).abilityB(p)
                 Game.MARIO -> Mario(plugin).abilityB(p)
-                Game.ZELDA -> TODO()
+                Game.ZELDA -> Zelda(plugin).abilityB(p)
                 Game.CASTLE_CRASHERS -> TODO()
                 Game.VALORANT -> TODO()
                 Game.SPIDERMAN -> TODO()

@@ -4,6 +4,7 @@ import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.abilities.Bendy
 import me.softsheep6.arcadecore.games.abilities.HollowKnight
 import me.softsheep6.arcadecore.games.abilities.Mario
+import me.softsheep6.arcadecore.games.abilities.Zelda
 import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
@@ -14,7 +15,7 @@ import org.bukkit.persistence.PersistentDataType
 import org.bukkit.potion.PotionEffectType
 import java.util.Locale.getDefault
 
-class GameManager(private val plugin: ArcadeCore) : Listener {
+class GameUtils(private val plugin: ArcadeCore) : Listener {
 
     /*
     methods:
@@ -46,6 +47,7 @@ class GameManager(private val plugin: ArcadeCore) : Listener {
             Game.BENDY -> p.removePotionEffect(PotionEffectType.RESISTANCE)
             Game.HOLLOW_KNIGHT -> p.getAttribute(Attribute.SNEAKING_SPEED)?.baseValue = 0.3
             Game.MARIO -> p.removePotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE)
+            Game.ZELDA -> p.removePotionEffect(PotionEffectType.HASTE)
             // more
             else -> {}
         }
@@ -63,6 +65,7 @@ class GameManager(private val plugin: ArcadeCore) : Listener {
             Game.BENDY -> Bendy(plugin).passiveA(p)
             Game.HOLLOW_KNIGHT -> HollowKnight(plugin).passiveA(p)
             Game.MARIO -> Mario(plugin).passiveA(p)
+            Game.ZELDA -> Zelda(plugin).passiveA(p)
             // more
             else -> {}
         }

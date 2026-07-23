@@ -6,7 +6,7 @@ import org.bukkit.entity.Player
 import kotlin.math.cos
 import kotlin.math.sin
 
-class OtherStuff {
+class MiscUtils {
 
     // i just know im gonna use this circle method at least a few times so here it gets its own class unless i add other things here too idk
     // taken from the plugin i made for jplays squid games which was also taken from uhhh idk some random stack overflow post

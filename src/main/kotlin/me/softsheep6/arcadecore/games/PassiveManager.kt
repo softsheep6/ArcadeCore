@@ -5,6 +5,7 @@ import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.abilities.Bendy
 import me.softsheep6.arcadecore.games.abilities.HollowKnight
 import me.softsheep6.arcadecore.games.abilities.Mario
+import me.softsheep6.arcadecore.games.abilities.Zelda
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -21,12 +22,13 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
     @EventHandler
     fun onPlayerJoin(e: PlayerJoinEvent) {
         val p = e.player
-        val game = GameManager(plugin).getGame(p)
+        val game = GameUtils(plugin).getGame(p)
 
         when (game) {
             Game.NONE -> return
             Game.BENDY -> Bendy(plugin).passiveA(p)
             Game.MARIO -> Mario(plugin).passiveA(p)
+            Game.ZELDA -> Zelda(plugin).passiveA(p)
             // more
             else -> {}
         }
@@ -36,7 +38,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
         val p = e.entity
         if (p !is Player) return
         if (e.cause != EntityPotionEffectEvent.Cause.MILK && e.cause != EntityPotionEffectEvent.Cause.TOTEM) return
-        val game = GameManager(plugin).getGame(p)
+        val game = GameUtils(plugin).getGame(p)
 
         // delay on giving the effects back otherwise bad things happen
         object : BukkitRunnable() {
@@ -45,6 +47,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
                     Game.NONE -> return
                     Game.BENDY -> Bendy(plugin).passiveA(p)
                     Game.MARIO -> Mario(plugin).passiveA(p)
+                    Game.ZELDA -> Zelda(plugin).passiveA(p)
                     // more
                     else -> {}
                 }
@@ -54,12 +57,13 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
     @EventHandler
     fun onPlayerRespawn(e: PlayerPostRespawnEvent) {
         val p = e.player
-        val game = GameManager(plugin).getGame(p)
+        val game = GameUtils(plugin).getGame(p)
 
         when (game) {
             Game.NONE -> return
             Game.BENDY -> Bendy(plugin).passiveA(p)
             Game.MARIO -> Mario(plugin).passiveA(p)
+            Game.ZELDA -> Zelda(plugin).passiveA(p)
             // more
             else -> {}
         }
@@ -72,7 +76,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
         val victim = e.entity
         val damager = e.damager
         if (victim !is Player || damager !is Player) return
-        val game = GameManager(plugin).getGame(damager)
+        val game = GameUtils(plugin).getGame(damager)
 
         // either the player or the damager can be passed into the passive methods, depending on if the effect is positive or negative
         when (game) {

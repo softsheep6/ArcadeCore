@@ -4,7 +4,7 @@ import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.Ability
 import me.softsheep6.arcadecore.games.AbstractGame
 import me.softsheep6.arcadecore.games.CooldownManager
-import me.softsheep6.arcadecore.games.OtherStuff
+import me.softsheep6.arcadecore.games.MiscUtils
 import me.softsheep6.arcadecore.games.listeners.BendyListeners.Foo.ignoredPlayers
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -190,7 +190,7 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
             object : BukkitRunnable() {
                 var index = 0
                 override fun run() {
-                    val locations = OtherStuff().getPoints(p.location.x, p.location.y, p.location.z, minionRadius, minionCount, p.world)
+                    val locations = MiscUtils().getPoints(p.location.x, p.location.y, p.location.z, minionRadius, minionCount, p.world)
 
                     // skeletons
                     minions.forEachIndexed { i, it ->
