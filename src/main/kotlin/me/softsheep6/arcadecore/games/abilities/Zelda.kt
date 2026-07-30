@@ -20,6 +20,13 @@ import org.bukkit.scheduler.BukkitRunnable
 
 class Zelda(private val plugin: ArcadeCore) : AbstractGame() {
 
+    // KNOWN BUGS //
+    /*
+    -- autosmelt passive doesn't account for fortune enchant
+     */
+    // TODO:
+    //  n/a
+
     // cooldowns in seconds
     val abilityACD = 3
     val abilityBCD = 3

@@ -2,10 +2,7 @@ package me.softsheep6.arcadecore.games
 
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent
 import me.softsheep6.arcadecore.ArcadeCore
-import me.softsheep6.arcadecore.games.abilities.Bendy
-import me.softsheep6.arcadecore.games.abilities.HollowKnight
-import me.softsheep6.arcadecore.games.abilities.Mario
-import me.softsheep6.arcadecore.games.abilities.Zelda
+import me.softsheep6.arcadecore.games.abilities.*
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -29,6 +26,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
             Game.BENDY -> Bendy(plugin).passiveA(p)
             Game.MARIO -> Mario(plugin).passiveA(p)
             Game.ZELDA -> Zelda(plugin).passiveA(p)
+            Game.VALORANT -> Valorant(plugin).passiveA(p)
             // more
             else -> {}
         }
@@ -48,6 +46,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
                     Game.BENDY -> Bendy(plugin).passiveA(p)
                     Game.MARIO -> Mario(plugin).passiveA(p)
                     Game.ZELDA -> Zelda(plugin).passiveA(p)
+                    Game.VALORANT -> Valorant(plugin).passiveA(p)
                     // more
                     else -> {}
                 }
@@ -64,6 +63,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
             Game.BENDY -> Bendy(plugin).passiveA(p)
             Game.MARIO -> Mario(plugin).passiveA(p)
             Game.ZELDA -> Zelda(plugin).passiveA(p)
+            Game.VALORANT -> Valorant(plugin).passiveA(p)
             // more
             else -> {}
         }
@@ -83,6 +83,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
             Game.NONE -> return
             Game.BENDY -> if (e.isCritical) Bendy(plugin).passiveB(damager)
             Game.HOLLOW_KNIGHT -> HollowKnight(plugin).passiveB(victim)
+            Game.VALORANT -> Valorant(plugin).passiveB(victim)
             // more
             else -> {}
         }

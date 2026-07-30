@@ -21,6 +21,13 @@ import org.bukkit.scheduler.BukkitRunnable
 
 class Mario(private val plugin: ArcadeCore) : AbstractGame() {
 
+    // KNOWN BUGS //
+    /*
+    -- leaving game probably messes up scale ability havent tested but probably idk
+     */
+    // TODO:
+    //  probably custom particles for ability A
+
     // cooldowns in seconds
     val abilityACD = 3
     val abilityBCD = 3
@@ -146,6 +153,7 @@ class Mario(private val plugin: ArcadeCore) : AbstractGame() {
     }
 
     override fun passiveB(p: Player) {
+        // rest of this is handled in MarioListeners
         p.world.dropItemNaturally(p.location, ItemStack(Material.APPLE))
     }
 }

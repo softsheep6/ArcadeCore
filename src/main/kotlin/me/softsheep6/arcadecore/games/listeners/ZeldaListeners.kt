@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack
 
 class ZeldaListeners(private val plugin: ArcadeCore) : Listener {
 
+    // TODO you forgot to account for fortune you stupid stupid stupid stupid stupid st
+
     @EventHandler
     fun onBlockBreak(e: BlockBreakEvent) {
         val p = e.player

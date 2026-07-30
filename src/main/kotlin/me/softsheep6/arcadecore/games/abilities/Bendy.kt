@@ -37,6 +37,7 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
     -- ink circle blocks can be broken (prevent with listeners for blockbreak, blockexplode(?), whatever the event for piston is)
     ABILITY 2
     -- minion arrows can hit ability user
+    -- minion arrows show as normal arrows when in a player's body (listen for ArrowBodyCountChangeEvent and cancel if arrow matches some nbt data given to the minion arrow)
      */
     // TODO:
     //  give the minion bows a configurable power enchant so damage can be modified

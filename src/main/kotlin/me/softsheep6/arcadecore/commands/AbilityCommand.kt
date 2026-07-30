@@ -3,10 +3,7 @@ package me.softsheep6.arcadecore.commands
 import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.Game
 import me.softsheep6.arcadecore.games.GameUtils
-import me.softsheep6.arcadecore.games.abilities.Bendy
-import me.softsheep6.arcadecore.games.abilities.HollowKnight
-import me.softsheep6.arcadecore.games.abilities.Mario
-import me.softsheep6.arcadecore.games.abilities.Zelda
+import me.softsheep6.arcadecore.games.abilities.*
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.Command
@@ -45,8 +42,8 @@ class AbilityCommand(private val plugin: ArcadeCore) : CommandExecutor {
                 Game.MARIO -> Mario(plugin).abilityA(p)
                 Game.ZELDA -> Zelda(plugin).abilityA(p)
                 Game.CASTLE_CRASHERS -> TODO()
-                Game.VALORANT -> TODO()
-                Game.SPIDERMAN -> TODO()
+                Game.VALORANT -> Valorant(plugin).abilityA(p)
+                Game.SPIDERMAN -> SpiderMan(plugin).abilityA(p)
                 Game.DONKEY_KONG -> TODO()
                 Game.POKEMON -> TODO()
                 Game.SONIC -> TODO()
@@ -64,8 +61,8 @@ class AbilityCommand(private val plugin: ArcadeCore) : CommandExecutor {
                 Game.MARIO -> Mario(plugin).abilityB(p)
                 Game.ZELDA -> Zelda(plugin).abilityB(p)
                 Game.CASTLE_CRASHERS -> TODO()
-                Game.VALORANT -> TODO()
-                Game.SPIDERMAN -> TODO()
+                Game.VALORANT -> Valorant(plugin).abilityB(p)
+                Game.SPIDERMAN -> SpiderMan(plugin).abilityB(p)
                 Game.DONKEY_KONG -> TODO()
                 Game.POKEMON -> TODO()
                 Game.SONIC -> TODO()
