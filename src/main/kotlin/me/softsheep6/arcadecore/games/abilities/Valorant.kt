@@ -67,7 +67,7 @@ class Valorant(private val plugin: ArcadeCore) : AbstractGame() {
             val scale = 0.5f // scale of item displays
 
             val displays = ArrayList<ItemDisplay>()
-            ValorantListeners.Foo.abilityActivePlayers.add(p)
+            ValorantListeners.Foo.activeAbilities[p] = swordCount
             for (i in -swordCount..<swordCount step 2) {
                 p.world.spawn(Location(p.world, p.x, p.y, p.z).clone().add((i+1)/4.0,yOffset - ((i + 1.0).pow(2.0) * 0.02),0.0), ItemDisplay::class.java) {
                     displays.add(it)
@@ -113,7 +113,7 @@ class Valorant(private val plugin: ArcadeCore) : AbstractGame() {
                         cancel()
                         displays.forEach {
                             it.remove()
-                            ValorantListeners.Foo.abilityActivePlayers.remove(p)
+                            ValorantListeners.Foo.activeAbilities.remove(p)
                         }
                     }
                 }

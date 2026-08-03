@@ -2,6 +2,7 @@ package me.softsheep6.arcadecore.games
 
 import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.abilities.*
+import me.softsheep6.arcadecore.games.listeners.CastleCrashersListeners
 import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
@@ -44,9 +45,11 @@ class GameUtils(private val plugin: ArcadeCore) : Listener {
             Game.BENDY -> p.removePotionEffect(PotionEffectType.RESISTANCE)
             Game.HOLLOW_KNIGHT -> p.getAttribute(Attribute.SNEAKING_SPEED)?.baseValue = 0.3
             Game.MARIO -> p.removePotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE)
+            Game.KIRBY -> p.removePotionEffect(PotionEffectType.WEAVING)
             Game.ZELDA -> p.removePotionEffect(PotionEffectType.HASTE)
             Game.VALORANT -> p.removePotionEffect(PotionEffectType.SPEED)
             Game.SPIDERMAN -> p.getAttribute(Attribute.FALL_DAMAGE_MULTIPLIER)?.baseValue = 1.0
+            Game.CASTLE_CRASHERS -> {p.removePotionEffect(PotionEffectType.STRENGTH); CastleCrashersListeners.Foo.shieldBreaks.remove(p)}
             // more
             else -> {}
         }
@@ -64,9 +67,11 @@ class GameUtils(private val plugin: ArcadeCore) : Listener {
             Game.BENDY -> Bendy(plugin).passiveA(p)
             Game.HOLLOW_KNIGHT -> HollowKnight(plugin).passiveA(p)
             Game.MARIO -> Mario(plugin).passiveA(p)
+            Game.KIRBY -> Kirby(plugin).passiveA(p)
             Game.ZELDA -> Zelda(plugin).passiveA(p)
             Game.VALORANT -> Zelda(plugin).passiveA(p)
             Game.SPIDERMAN -> SpiderMan(plugin).passiveA(p)
+            Game.CASTLE_CRASHERS -> {CastleCrashers(plugin).passiveA(p); CastleCrashers(plugin).passiveB(p)}
             // more
             else -> {}
         }

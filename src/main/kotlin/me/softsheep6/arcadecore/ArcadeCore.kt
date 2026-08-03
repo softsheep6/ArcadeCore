@@ -26,7 +26,10 @@ class ArcadeCore : JavaPlugin(), Listener {
         Bukkit.getPluginManager().registerEvents(HollowKnightListeners(), this)
         Bukkit.getPluginManager().registerEvents(MarioListeners(this), this)
         Bukkit.getPluginManager().registerEvents(ZeldaListeners(this), this)
+        Bukkit.getPluginManager().registerEvents(ValorantListeners(), this)
         Bukkit.getPluginManager().registerEvents(SpiderManListeners(this), this)
+        Bukkit.getPluginManager().registerEvents(KirbyListeners(this), this)
+        Bukkit.getPluginManager().registerEvents(CastleCrashersListeners(), this)
 
 
 

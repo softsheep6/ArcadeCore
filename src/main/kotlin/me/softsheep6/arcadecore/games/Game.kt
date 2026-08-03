@@ -4,6 +4,7 @@ enum class Game {
     BENDY,
     HOLLOW_KNIGHT,
     MARIO,
+    KIRBY,
     ZELDA,
     CASTLE_CRASHERS,
     VALORANT,

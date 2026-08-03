@@ -25,8 +25,10 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
             Game.NONE -> return
             Game.BENDY -> Bendy(plugin).passiveA(p)
             Game.MARIO -> Mario(plugin).passiveA(p)
+            Game.KIRBY -> Kirby(plugin).passiveA(p)
             Game.ZELDA -> Zelda(plugin).passiveA(p)
             Game.VALORANT -> Valorant(plugin).passiveA(p)
+            Game.CASTLE_CRASHERS -> {CastleCrashers(plugin).passiveA(p); CastleCrashers(plugin).passiveB(p)}
             // more
             else -> {}
         }
@@ -45,8 +47,10 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
                     Game.NONE -> return
                     Game.BENDY -> Bendy(plugin).passiveA(p)
                     Game.MARIO -> Mario(plugin).passiveA(p)
+                    Game.KIRBY -> Kirby(plugin).passiveA(p)
                     Game.ZELDA -> Zelda(plugin).passiveA(p)
                     Game.VALORANT -> Valorant(plugin).passiveA(p)
+                    Game.CASTLE_CRASHERS -> CastleCrashers(plugin).passiveA(p)
                     // more
                     else -> {}
                 }
@@ -62,8 +66,10 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
             Game.NONE -> return
             Game.BENDY -> Bendy(plugin).passiveA(p)
             Game.MARIO -> Mario(plugin).passiveA(p)
+            Game.KIRBY -> Kirby(plugin).passiveA(p)
             Game.ZELDA -> Zelda(plugin).passiveA(p)
             Game.VALORANT -> Valorant(plugin).passiveA(p)
+            Game.CASTLE_CRASHERS -> CastleCrashers(plugin).passiveA(p)
             // more
             else -> {}
         }
