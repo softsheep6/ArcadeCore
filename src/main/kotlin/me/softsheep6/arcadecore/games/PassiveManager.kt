@@ -29,6 +29,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
             Game.ZELDA -> Zelda(plugin).passiveA(p)
             Game.VALORANT -> Valorant(plugin).passiveA(p)
             Game.CASTLE_CRASHERS -> {CastleCrashers(plugin).passiveA(p); CastleCrashers(plugin).passiveB(p)}
+            Game.DONKEY_KONG -> DonkeyKong(plugin).passiveA(p)
             // more
             else -> {}
         }
@@ -51,6 +52,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
                     Game.ZELDA -> Zelda(plugin).passiveA(p)
                     Game.VALORANT -> Valorant(plugin).passiveA(p)
                     Game.CASTLE_CRASHERS -> CastleCrashers(plugin).passiveA(p)
+                    Game.DONKEY_KONG -> DonkeyKong(plugin).passiveA(p)
                     // more
                     else -> {}
                 }
@@ -70,6 +72,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
             Game.ZELDA -> Zelda(plugin).passiveA(p)
             Game.VALORANT -> Valorant(plugin).passiveA(p)
             Game.CASTLE_CRASHERS -> CastleCrashers(plugin).passiveA(p)
+            Game.DONKEY_KONG -> DonkeyKong(plugin).passiveA(p)
             // more
             else -> {}
         }

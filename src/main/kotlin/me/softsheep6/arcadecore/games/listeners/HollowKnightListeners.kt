@@ -12,12 +12,12 @@ import org.bukkit.event.entity.EntityDamageEvent
 class HollowKnightListeners : Listener {
 
     object Foo {
-        var player: Player? = null
+        var player = HashSet<Player>()
     }
 
     @EventHandler
     fun onEntityDamage(e: EntityDamageEvent) {
-        if (e.cause != EntityDamageEvent.DamageCause.FALL || e.entity !is Player || player == null) return
+        if (e.cause != EntityDamageEvent.DamageCause.FALL || e.entity !is Player || player.isEmpty()) return
 
         // configurable
         val radius = 5.0 // in blocks, radius of damage/particles
@@ -28,11 +28,11 @@ class HollowKnightListeners : Listener {
         // if the player who took fall damage is the same player who just used hk ability a,
         // then cancel the damage, do sfx and particles, and damage nearby untrusted players
         val damagedPlayer = e.entity as Player
-        if (damagedPlayer == player) {
+        if (player.contains(damagedPlayer)) {
             e.isCancelled = true
 
             // sfx
-            damagedPlayer.world.playSound(player!!.location, Sound.BLOCK_ANVIL_LAND, 1F, 0.5F)
+            damagedPlayer.world.playSound(damagedPlayer.location, Sound.BLOCK_ANVIL_LAND, 1F, 0.5F)
 
             // particles
             Particle.BLOCK.builder()
@@ -66,7 +66,7 @@ class HollowKnightListeners : Listener {
                     } else it.health -= damage
                 }
             }
-            player = null
+            player.remove(damagedPlayer)
         }
     }
 }

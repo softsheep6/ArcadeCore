@@ -51,7 +51,7 @@ class HollowKnight(private val plugin: ArcadeCore) : AbstractGame() {
             // up
             p.velocity = Vector(p.velocity.x, upVelocity, p.velocity.z)
             p.world.playSound(p.location, Sound.ENTITY_ENDER_DRAGON_FLAP, 1F, 0.5F)
-            player = p
+            player.add(p)
 
             // particles
             val points = MiscUtils().getPoints(p.x, p.y + 1.5, p.z, radius, particleCount, p.world)
@@ -70,7 +70,7 @@ class HollowKnight(private val plugin: ArcadeCore) : AbstractGame() {
                     ticks++
                     // after delay ticks, apply velocity downwards
                     if (ticks == delay) p.velocity = Vector(p.velocity.x, downVelocity, p.velocity.z)
-                    else if (ticks > delay * 2) { cancel(); player = null }
+                    else if (ticks > delay * 2) { cancel(); player.remove(p) }
                 }
             }.runTaskTimer(plugin, 0L, 1L)
 
