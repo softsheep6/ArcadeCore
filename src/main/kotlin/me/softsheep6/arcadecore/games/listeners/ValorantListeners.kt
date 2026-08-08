@@ -15,11 +15,13 @@ class ValorantListeners : Listener {
 
     @EventHandler
     fun onPlayerInteract(e: PlayerInteractEvent) {
-        if (e.action != Action.LEFT_CLICK_AIR || e.action != Action.LEFT_CLICK_BLOCK) return
+        if (e.action != Action.LEFT_CLICK_AIR) return
         if (!activeAbilities.contains(e.player)) return // return if player who interacted isn't using ability
 
         val p = e.player
-        val arrow = p.world.spawnArrow(p.location, p.location.direction, 1f, 0f)
+        if ((activeAbilities[p] ?: return) > 0) {
+            val arrow = p.world.spawnArrow(p.location.clone().add(0.0,1.75,0.0), p.location.direction, 1f, 2f)
+        }
 
         // decrease swords by 1
         activeAbilities[p] = activeAbilities[p]?.minus(1) ?: 0 // wtf is .minus ive never seen that ever ever whatever thanks intellij i guess

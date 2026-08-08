@@ -4,6 +4,7 @@ import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.Ability
 import me.softsheep6.arcadecore.games.AbstractGame
 import me.softsheep6.arcadecore.games.CooldownManager
+import me.softsheep6.arcadecore.games.StunManager
 import me.softsheep6.arcadecore.games.listeners.CastleCrashersListeners
 import me.softsheep6.arcadecore.games.listeners.CastleCrashersListeners.Foo.BREAKS
 import net.kyori.adventure.text.Component
@@ -56,7 +57,7 @@ class CastleCrashers(private val plugin: ArcadeCore) : AbstractGame() {
             nearbyPlayers.remove(p)
             // remove trusted players here
             if (nearbyPlayers.isEmpty()) return // return if there's no one nearby
-            CastleCrashersListeners.Foo.frozenPlayers.addAll(nearbyPlayers)
+            nearbyPlayers.forEach { StunManager(plugin).stunPlayer(it, dur, Title.title(Component.text("FROZEN").style(Style.style(TextDecoration.BOLD)).color(NamedTextColor.AQUA), Component.text(""), 0, dur.toInt(), 0)) }
 
             // ice block display, sfx, and particles
             val iceBlocks = ArrayList<BlockDisplay>()
@@ -79,11 +80,6 @@ class CastleCrashers(private val plugin: ArcadeCore) : AbstractGame() {
                 // sfx
                 player.playSound(player.location, Sound.BLOCK_GLASS_BREAK, 1f, 0.5f)
 
-                // title
-                player.showTitle(
-                    Title.title(Component.text("FROZEN").style(Style.style(TextDecoration.BOLD)).color(NamedTextColor.AQUA), Component.text(""), 0, dur.toInt(), 0)
-                )
-
                 // particles
                 Particle.ITEM_SNOWBALL.builder()
                     .location(player.location)
@@ -103,7 +99,6 @@ class CastleCrashers(private val plugin: ArcadeCore) : AbstractGame() {
             // unfreeze players
             object : BukkitRunnable() {
                 override fun run() {
-                    CastleCrashersListeners.Foo.frozenPlayers.removeAll(nearbyPlayers)
 
                     // kill ice blocks
                     iceBlocks.forEach { it.remove() }

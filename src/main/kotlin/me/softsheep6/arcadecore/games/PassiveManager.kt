@@ -30,6 +30,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
             Game.VALORANT -> Valorant(plugin).passiveA(p)
             Game.CASTLE_CRASHERS -> {CastleCrashers(plugin).passiveA(p); CastleCrashers(plugin).passiveB(p)}
             Game.DONKEY_KONG -> DonkeyKong(plugin).passiveA(p)
+            Game.POKEMON -> Pokemon(plugin).passiveA(p)
             // more
             else -> {}
         }
@@ -53,6 +54,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
                     Game.VALORANT -> Valorant(plugin).passiveA(p)
                     Game.CASTLE_CRASHERS -> CastleCrashers(plugin).passiveA(p)
                     Game.DONKEY_KONG -> DonkeyKong(plugin).passiveA(p)
+                    Game.POKEMON -> Pokemon(plugin).passiveA(p)
                     // more
                     else -> {}
                 }
@@ -73,13 +75,14 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
             Game.VALORANT -> Valorant(plugin).passiveA(p)
             Game.CASTLE_CRASHERS -> CastleCrashers(plugin).passiveA(p)
             Game.DONKEY_KONG -> DonkeyKong(plugin).passiveA(p)
+            Game.POKEMON -> Pokemon(plugin).passiveA(p)
             // more
             else -> {}
         }
     }
 
 
-    // many abilities involve effects being applied after hitting/critting someone too, so this should go here as well
+    // many abilities involve effects being applied/something happening after hitting/critting someone too, so this should go here as well
     @EventHandler
     fun onPlayerDamageByPlayer(e: EntityDamageByEntityEvent) {
         val victim = e.entity
@@ -93,6 +96,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
             Game.BENDY -> if (e.isCritical) Bendy(plugin).passiveB(damager)
             Game.HOLLOW_KNIGHT -> HollowKnight(plugin).passiveB(victim)
             Game.VALORANT -> Valorant(plugin).passiveB(victim)
+            Game.POKEMON -> Pokemon(plugin).passiveB(victim)
             // more
             else -> {}
         }

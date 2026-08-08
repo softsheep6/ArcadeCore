@@ -5,6 +5,7 @@ import me.softsheep6.arcadecore.commands.GameCommand
 import me.softsheep6.arcadecore.games.CooldownManager
 import me.softsheep6.arcadecore.games.GameUtils
 import me.softsheep6.arcadecore.games.PassiveManager
+import me.softsheep6.arcadecore.games.StunManager
 import me.softsheep6.arcadecore.games.listeners.*
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
@@ -22,6 +23,7 @@ class ArcadeCore : JavaPlugin(), Listener {
         Bukkit.getPluginManager().registerEvents(GameUtils(this), this)
         Bukkit.getPluginManager().registerEvents(CooldownManager(this), this)
         Bukkit.getPluginManager().registerEvents(PassiveManager(this), this)
+        Bukkit.getPluginManager().registerEvents(StunManager(this), this)
         Bukkit.getPluginManager().registerEvents(BendyListeners(this), this)
         Bukkit.getPluginManager().registerEvents(HollowKnightListeners(), this)
         Bukkit.getPluginManager().registerEvents(MarioListeners(this), this)
@@ -31,6 +33,8 @@ class ArcadeCore : JavaPlugin(), Listener {
         Bukkit.getPluginManager().registerEvents(KirbyListeners(this), this)
         Bukkit.getPluginManager().registerEvents(CastleCrashersListeners(), this)
         Bukkit.getPluginManager().registerEvents(DonkeyKongListeners(this), this)
+        Bukkit.getPluginManager().registerEvents(PokemonListeners(), this)
+        Bukkit.getPluginManager().registerEvents(SonicListeners(this), this)
 
 
 

@@ -46,6 +46,20 @@ class MiscUtils {
             }
             return nearest
         }
+    }
 
+    // no ai this time omg
+    fun getLinePoints(from: Location, to: Location, divisions: Int): List<Location> {
+        val linePoints = ArrayList<Location>()
+
+        for (i in 0..<divisions) {
+            val multiplier = i.toDouble()/divisions
+            val x = ((to.x - from.x) * multiplier) + from.x
+            val y = ((to.y - from.y) * multiplier) + from.y
+            val z = ((to.z - from.z) * multiplier) + from.z
+            linePoints.add(Location(from.world, x, y, z))
+        }
+
+        return linePoints
     }
 }

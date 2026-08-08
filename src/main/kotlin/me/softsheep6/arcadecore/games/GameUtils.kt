@@ -51,6 +51,7 @@ class GameUtils(private val plugin: ArcadeCore) : Listener {
             Game.SPIDERMAN -> p.getAttribute(Attribute.FALL_DAMAGE_MULTIPLIER)?.baseValue = 1.0
             Game.CASTLE_CRASHERS -> {p.removePotionEffect(PotionEffectType.STRENGTH); CastleCrashersListeners.Foo.shieldBreaks.remove(p)}
             Game.DONKEY_KONG -> p.removePotionEffect(PotionEffectType.RESISTANCE)
+            Game.POKEMON -> p.removePotionEffect(PotionEffectType.SATURATION)
             // more
             else -> {}
         }
@@ -74,6 +75,7 @@ class GameUtils(private val plugin: ArcadeCore) : Listener {
             Game.SPIDERMAN -> SpiderMan(plugin).passiveA(p)
             Game.CASTLE_CRASHERS -> {CastleCrashers(plugin).passiveA(p); CastleCrashers(plugin).passiveB(p)}
             Game.DONKEY_KONG -> DonkeyKong(plugin).passiveA(p)
+            Game.POKEMON -> Pokemon(plugin).passiveA(p)
             // more
             else -> {}
         }

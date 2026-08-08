@@ -17,7 +17,10 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.util.Transformation
 import org.bukkit.util.Vector
+import org.joml.AxisAngle4f
+import org.joml.Vector3f
 
 class DonkeyKong(private val plugin: ArcadeCore) : AbstractGame() {
     // KNOWN BUGS //
@@ -99,7 +102,9 @@ class DonkeyKong(private val plugin: ArcadeCore) : AbstractGame() {
                         pig.isCollidable = false
 
                         // model stuff
-                        val itemDisplay = p.world.spawn(p.location, ItemDisplay::class.java) {
+                        val loc = p.location.clone().add(0.0,-0.5,0.0)
+                        loc.pitch = 0f
+                        val itemDisplay = p.world.spawn(loc, ItemDisplay::class.java) {
                             val item = ItemStack.of(Material.IRON_SWORD)
                             val meta = item.itemMeta
                             val strings = ArrayList<String>()
@@ -109,6 +114,10 @@ class DonkeyKong(private val plugin: ArcadeCore) : AbstractGame() {
                             meta.setCustomModelDataComponent(cmd)
                             item.itemMeta = meta
                             it.setItemStack(item)
+
+                            val transformation = Transformation(Vector3f(), AxisAngle4f((Math.toRadians(90.0)).toFloat(), 0.0f, 0.0f, 1.0f), Vector3f(1f,1f,1f), AxisAngle4f())
+                            it.transformation = transformation
+
                             it.teleportDuration = 1
                             displays.add(it)
                         }
@@ -161,10 +170,17 @@ class DonkeyKong(private val plugin: ArcadeCore) : AbstractGame() {
                             p.world.playSound(pig.key.location, Sound.ENTITY_GENERIC_EXPLODE, 1f, 2f)
                             p.world.playSound(pig.key.location, Sound.ENTITY_ARROW_HIT, 1f, 0.6f)
                         }
+                    }
 
-                        // teleport the display entity too because for whatever reason hiding the pig doesn't update its passengers' positions
-                        //displays.forEach { it.teleport(it.vehicle ?: return) }
-                        //println("asdf")
+                    displays.forEach {
+                        if (it.isValid) {
+                            val transformation = Transformation(Vector3f(),
+                                AxisAngle4f((Math.toRadians(90.0)).toFloat(), 0.0f, 0.0f, 1.0f),
+                                Vector3f(1f,1f,1f),
+                                AxisAngle4f(Math.toRadians(index.toDouble()*-10).toFloat(), 0f, 1f, 0f))
+                            it.transformation = transformation
+                            it.interpolationDuration = 1
+                        }
                     }
 
                     index++

@@ -4,7 +4,7 @@ import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.Ability
 import me.softsheep6.arcadecore.games.AbstractGame
 import me.softsheep6.arcadecore.games.CooldownManager
-import me.softsheep6.arcadecore.games.listeners.ValorantListeners
+import me.softsheep6.arcadecore.games.listeners.ValorantListeners.Foo.activeAbilities
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
@@ -62,25 +62,25 @@ class Valorant(private val plugin: ArcadeCore) : AbstractGame() {
 
             // configurable
             val swordCount = 5
-            val dur = 80L // in ticks, time before swords expire by default. they will most likely be used up before this happens though
+            val dur = 200L // in ticks, time before swords expire by default. they will most likely be used up before this happens though
             val yOffset = 3 // in blocks, y offset of swords above the player
             val scale = 0.5f // scale of item displays
 
             val displays = ArrayList<ItemDisplay>()
-            ValorantListeners.Foo.activeAbilities[p] = swordCount
+            activeAbilities[p] = swordCount
             for (i in -swordCount..<swordCount step 2) {
                 p.world.spawn(Location(p.world, p.x, p.y, p.z).clone().add((i+1)/4.0,yOffset - ((i + 1.0).pow(2.0) * 0.02),0.0), ItemDisplay::class.java) {
                     displays.add(it)
 
                     // item and cmd stuff
                     val item = ItemStack.of(Material.IRON_SWORD)
-                    //val meta = item.itemMeta
-                    //val strings = ArrayList<String>()
-                    //val cmd = meta.customModelDataComponent
-                    //strings.add("valorant")
-                    //cmd.strings = strings
-                    //meta.setCustomModelDataComponent(cmd)
-                    //item.itemMeta = meta
+                    val meta = item.itemMeta
+                    val strings = ArrayList<String>()
+                    val cmd = meta.customModelDataComponent
+                    strings.add("valorant")
+                    cmd.strings = strings
+                    meta.setCustomModelDataComponent(cmd)
+                    item.itemMeta = meta
                     it.setItemStack(item)
 
                     // transformation
@@ -95,10 +95,19 @@ class Valorant(private val plugin: ArcadeCore) : AbstractGame() {
             // teleport displays to player. also kill displays after duration
             object : BukkitRunnable() {
                 var index = 0
+                var swords = swordCount
                 override fun run() {
 
+                    if (swords != activeAbilities[p]) {
+                        swords = activeAbilities[p] ?: return
+                        if (displays.isNotEmpty()) {
+                            displays.last().remove()
+                            displays.remove(displays.last())
+                        }
+                    }
+
                     // j is for the arraylist (0-4), i is for the offset (-5,-3,-1,1,3)
-                    for ((j, i) in (-swordCount..<swordCount step 2).withIndex()) {
+                    for ((j, i) in (-swords..<swords step 2).withIndex()) {
 
                         // teleport
                         displays[j].teleport(Location(p.world, p.x, p.y, p.z).clone().add((i+1)/4.0,yOffset - ((i + 1.0).pow(2.0) * 0.02),0.0))
@@ -113,7 +122,7 @@ class Valorant(private val plugin: ArcadeCore) : AbstractGame() {
                         cancel()
                         displays.forEach {
                             it.remove()
-                            ValorantListeners.Foo.activeAbilities.remove(p)
+                            activeAbilities.remove(p)
                         }
                     }
                 }

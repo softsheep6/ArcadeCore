@@ -3,6 +3,7 @@ package me.softsheep6.arcadecore.games.listeners
 import me.softsheep6.arcadecore.ArcadeCore
 import me.softsheep6.arcadecore.games.Game
 import me.softsheep6.arcadecore.games.GameUtils
+import me.softsheep6.arcadecore.games.StunManager
 import me.softsheep6.arcadecore.games.listeners.DonkeyKongListeners.Foo.players
 import org.bukkit.Particle
 import org.bukkit.Sound
@@ -27,6 +28,7 @@ class DonkeyKongListeners(private val plugin: ArcadeCore) : Listener {
         // configurable
         val radius = 4.0 // in blocks, radius of damage/particles
         val damage = 6.0 // true damage
+        val stunDur = 30L // duration of stun, in ticks
         val particleCount = 200
         val particleYOffset = 0.2
 
@@ -54,7 +56,7 @@ class DonkeyKongListeners(private val plugin: ArcadeCore) : Listener {
                 .spawn()
 
 
-            // damage untrusted players
+            // damage & stun untrusted players
             val nearbyPlayers = damagedPlayer.world.getNearbyPlayers(damagedPlayer.location, radius)
             nearbyPlayers.remove(damagedPlayer)
             // remove trusted from list here
@@ -69,6 +71,9 @@ class DonkeyKongListeners(private val plugin: ArcadeCore) : Listener {
                         it.health = 0.001
                         it.damage(10.0, damagedPlayer)
                     } else it.health -= damage
+
+                    // & stun them
+                    StunManager(plugin).stunPlayer(it, stunDur)
                 }
             }
             players.remove(damagedPlayer)
