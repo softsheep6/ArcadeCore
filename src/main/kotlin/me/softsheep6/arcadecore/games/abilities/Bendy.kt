@@ -35,6 +35,7 @@ class Bendy(private val plugin: ArcadeCore) : AbstractGame() {
     ABILITY 1
     -- overlapping ink circles can leave blocks behind after ability ends
     -- ink circle blocks can be broken (prevent with listeners for blockbreak, blockexplode(?), whatever the event for piston is)
+    -- save blockdata instead of whatever is used now in order to prevent things like items in containers from being deleted
     ABILITY 2
     -- minion arrows can hit ability user
     -- minion arrows show as normal arrows when in a player's body (listen for ArrowBodyCountChangeEvent and cancel if arrow matches some nbt data given to the minion arrow)

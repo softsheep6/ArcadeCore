@@ -12,7 +12,7 @@ enum class Game {
     DONKEY_KONG,
     POKEMON,
     SONIC,
-    RYU,
+    STREET_FIGHTER,
     SUBNAUTICA,
     AMONG_US,
     CUPHEAD,

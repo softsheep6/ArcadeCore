@@ -52,6 +52,7 @@ class GameUtils(private val plugin: ArcadeCore) : Listener {
             Game.CASTLE_CRASHERS -> {p.removePotionEffect(PotionEffectType.STRENGTH); CastleCrashersListeners.Foo.shieldBreaks.remove(p)}
             Game.DONKEY_KONG -> p.removePotionEffect(PotionEffectType.RESISTANCE)
             Game.POKEMON -> p.removePotionEffect(PotionEffectType.SATURATION)
+            Game.SONIC -> p.removePotionEffect(PotionEffectType.SPEED)
             // more
             else -> {}
         }
@@ -71,11 +72,12 @@ class GameUtils(private val plugin: ArcadeCore) : Listener {
             Game.MARIO -> Mario(plugin).passiveA(p)
             Game.KIRBY -> Kirby(plugin).passiveA(p)
             Game.ZELDA -> Zelda(plugin).passiveA(p)
-            Game.VALORANT -> Zelda(plugin).passiveA(p)
+            Game.VALORANT -> Valorant(plugin).passiveA(p)
             Game.SPIDERMAN -> SpiderMan(plugin).passiveA(p)
             Game.CASTLE_CRASHERS -> {CastleCrashers(plugin).passiveA(p); CastleCrashers(plugin).passiveB(p)}
             Game.DONKEY_KONG -> DonkeyKong(plugin).passiveA(p)
             Game.POKEMON -> Pokemon(plugin).passiveA(p)
+            Game.SONIC -> Sonic(plugin).passiveA(p)
             // more
             else -> {}
         }

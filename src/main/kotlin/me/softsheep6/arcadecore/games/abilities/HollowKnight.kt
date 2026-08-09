@@ -110,8 +110,6 @@ class HollowKnight(private val plugin: ArcadeCore) : AbstractGame() {
             object : BukkitRunnable() {
                 var ticks = 0
                 override fun run() {
-                    ticks++
-                    if (ticks > dur) return
 
                     // particles
                     Particle.INSTANT_EFFECT.builder()
@@ -129,6 +127,9 @@ class HollowKnight(private val plugin: ArcadeCore) : AbstractGame() {
                     nearbyPlayers.forEach {
                         it.addPotionEffect(PotionEffect(PotionEffectType.WITHER, effectDur, effectAmp))
                     }
+
+                    ticks++
+                    if (ticks >= dur) cancel()
                 }
             }.runTaskTimer(plugin, 0L, 1L)
 
