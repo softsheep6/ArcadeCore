@@ -57,6 +57,12 @@ class StreetFighter(private val plugin: ArcadeCore) : AbstractGame() {
     }
 
     override fun passiveB(p: Player) {
-        TODO("Not yet implemented")
+        // configurable
+        val dur = 160 // in ticks
+        val amp = 2
+        val chance = 16.4 // as a percentage
+
+        val random = (Math.random() * 100)
+        if (random < chance) p.addPotionEffect(PotionEffect(PotionEffectType.POISON, dur, amp))
     }
 }

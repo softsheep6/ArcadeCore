@@ -53,6 +53,7 @@ class GameUtils(private val plugin: ArcadeCore) : Listener {
             Game.DONKEY_KONG -> p.removePotionEffect(PotionEffectType.RESISTANCE)
             Game.POKEMON -> p.removePotionEffect(PotionEffectType.SATURATION)
             Game.SONIC -> p.removePotionEffect(PotionEffectType.SPEED)
+            Game.STREET_FIGHTER -> p.removePotionEffect(PotionEffectType.LUCK)
             // more
             else -> {}
         }
@@ -78,6 +79,7 @@ class GameUtils(private val plugin: ArcadeCore) : Listener {
             Game.DONKEY_KONG -> DonkeyKong(plugin).passiveA(p)
             Game.POKEMON -> Pokemon(plugin).passiveA(p)
             Game.SONIC -> Sonic(plugin).passiveA(p)
+            Game.STREET_FIGHTER -> StreetFighter(plugin).passiveA(p)
             // more
             else -> {}
         }
