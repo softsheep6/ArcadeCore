@@ -103,7 +103,7 @@ class PassiveManager(private val plugin: ArcadeCore) : Listener {
             Game.HOLLOW_KNIGHT -> HollowKnight(plugin).passiveB(victim)
             Game.VALORANT -> Valorant(plugin).passiveB(victim)
             Game.POKEMON -> Pokemon(plugin).passiveB(victim)
-            Game.STREET_FIGHTER -> StreetFighter(plugin).passiveA(victim)
+            Game.STREET_FIGHTER -> StreetFighter(plugin).passiveB(victim)
             // more
             else -> {}
         }

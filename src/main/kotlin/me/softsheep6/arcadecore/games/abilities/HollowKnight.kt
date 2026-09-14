@@ -123,9 +123,10 @@ class HollowKnight(private val plugin: ArcadeCore) : AbstractGame() {
                     val nearbyPlayers = p.world.getNearbyPlayers(p.location, radius)
                     nearbyPlayers.remove(p)
                     // remove trusted players
-                    if (nearbyPlayers.isEmpty()) return
-                    nearbyPlayers.forEach {
-                        it.addPotionEffect(PotionEffect(PotionEffectType.WITHER, effectDur, effectAmp))
+                    if (nearbyPlayers.isNotEmpty()) {
+                        nearbyPlayers.forEach {
+                            it.addPotionEffect(PotionEffect(PotionEffectType.WITHER, effectDur, effectAmp))
+                        }
                     }
 
                     ticks++
