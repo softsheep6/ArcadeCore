@@ -36,6 +36,7 @@ class ArcadeCore : JavaPlugin(), Listener {
         Bukkit.getPluginManager().registerEvents(PokemonListeners(), this)
         Bukkit.getPluginManager().registerEvents(SonicListeners(this), this)
         Bukkit.getPluginManager().registerEvents(StreetFighterListeners(this), this)
+        Bukkit.getPluginManager().registerEvents(SubnauticaListeners(), this)
 
 
 
